@@ -1,0 +1,8 @@
+#ifndef RAII_IH
+#define RAII_IH
+
+#include "raii.h"
+
+struct raii_with_lifetime_list_t *raii_with_lifetime_list = NULL;
+
+#endif //RAII_IH
