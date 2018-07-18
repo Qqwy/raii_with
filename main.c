@@ -26,29 +26,38 @@ raii_with_lifetime_list_t *raii_with_lifetime_list = NULL;
 #define raii_with_glueimpl(x, y) x ## y
 #define raii_with_glue(x, y) raii_with_glueimpl(x, y)
 
+void destruct_raii_with_lifetime(raii_with_lifetime_elem elem) {
+  elem.destructor(elem.resource);  \
+}
 
-#define T_with(var_decl, init, destr)                              \
+#define safe_return \
+  while (raii_with_lifetime_list != NULL) {                     \
+    destruct_raii_with_lifetime(raii_with_lifetime_list.elem);  \
+    raii_with_lifetime_list = *raii_with_lifetime_list->next;   \
+  }                                                             \
+  return \
+
+#define T_with(var_decl, init, destr)                                   \
   while(1)                                                              \
     if(0)                                                               \
     raii_with_glue(__using_finished, __LINE__):                         \
       break;                                                            \
     else                                                                \
       for(raii_with_lifetime_list_t _tmp = {.elem.resource = init, .elem.destructor = destr, .next = raii_with_lifetime_list};;) \
-        for(var_decl = _tmp.elem.resource;;)                                 \
-          if (0) {                                                      \
-          raii_with_glue(__using_cleanup, __LINE__):                    \
-            _tmp.elem.destructor(_tmp.elem.resource);                   \
-              goto raii_with_glue(__using_finished, __LINE__);          \
+        for(var_decl = _tmp.elem.resource;;)                            \
+          if (1) {                                                      \
+            _tmp.next = raii_with_lifetime_list;                        \
+            goto raii_with_glue(__using_setup, __LINE__);               \
           } else                                                        \
-            if (1) {                                                    \
-              _tmp.next = raii_with_lifetime_list;                      \
-                goto raii_with_glue(__using_setup, __LINE__);           \
-            } else                                                      \
-            raii_with_glue(__using_setup, __LINE__):                    \
-              for(raii_with_lifetime_list_t raii_with_lifetime_list = _tmp;;goto raii_with_glue(__using_body, __LINE__)) \
+          raii_with_glue(__using_setup, __LINE__):                      \
+            for(raii_with_lifetime_list_t raii_with_lifetime_list = _tmp;;) \
+              if(1){                                                    \
+                goto raii_with_glue(__using_body, __LINE__);            \
+              } else                                                    \
                 while (1)                                               \
                   if (1){                                               \
-                    goto raii_with_glue(__using_cleanup, __LINE__);     \
+                    destruct_raii_with_lifetime(raii_with_lifetime_list.elem); \
+                    goto raii_with_glue(__using_finished, __LINE__);    \
                   } else                                                \
                   raii_with_glue(__using_body, __LINE__):               \
 
