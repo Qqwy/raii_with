@@ -25,6 +25,7 @@ struct raii_lifetime_list_t {
   struct raii_lifetime_list_t* next;
 };
 
+
 /**
  * This variable will be shadowed when `raii_with` is called, but first it becomes the tail of the innermore variable.
  * This means that we end up with a linked list of all resources that are currently in use in the current invocation of the function.
@@ -41,6 +42,7 @@ struct raii_lifetime_list_t *raii_lifetime_list;
 #define raii_glueimpl(x, y) x ## y
 #define raii_glue(x, y) raii_glueimpl(x, y)
 
+
 /**
  * Used to quickly return (either a value or void) from a (deeply nested) `raii_with` statement.
  * !Important! Do not return the contents of a resource acquired from `raii_with` directly, but store these in a separate variable first!
@@ -53,6 +55,7 @@ struct raii_lifetime_list_t *raii_lifetime_list;
     raii_lifetime_list = raii_lifetime_list->next;    \
   }                                                   \
   return                                              \
+
 
 /**
  * Custom Control Structure Macro to provide Resource Acquisition Is Initialization (and Resource Relinquishment is Destruction).
@@ -88,7 +91,7 @@ struct raii_lifetime_list_t *raii_lifetime_list;
                 while (1) /* so break works as expected */              \
                   while (1) /*so continue works as expected */          \
                     if (1){                                             \
-                      /*after the else-block (or break or continue), destruct and quit*/ \
+                      /*after the else-block (or break or continue), destruct and finish */ \
                       destruct_raii_lifetime(raii_lifetime_list->elem); \
                       goto raii_glue(__raii_with_finished, __LINE__);       \
                     } else                                              \
