@@ -61,4 +61,5 @@ and the there-linked further resources as well.
 1. Do not use `return` from within `raii_with`, but only `safe_return`, because otherwise the destructors will not be run.
 2. Do not perform pointer-swaps with `var_decl`; the destructor will still be run on the original structure, because `raii` keeps its own reference to the resource.
 
+I believe both of these things are very logical and easy to keep in mind. (resulting in **raii** being a near-leak-free abstraction). If you know of a way to further reduce these without introducing new ones, please share it!
 
