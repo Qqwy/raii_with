@@ -1,5 +1,6 @@
-#include "raii.ih"
+#include "raii.h"
 
-void destruct_raii_with_lifetime(struct raii_with_lifetime_elem elem) {
+/** Helper function that properly destructs the resource stored in a `raii_lifetime_elem` struct. */
+void destruct_raii_lifetime(struct raii_lifetime_elem elem) {
   elem.destructor(elem.resource);
 }
