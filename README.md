@@ -63,3 +63,9 @@ and the there-linked further resources as well.
 
 I believe both of these things are very logical and easy to keep in mind. (resulting in **raii** being a near-leak-free abstraction). If you know of a way to further reduce these without introducing new ones, please share it!
 
+
+## Acknowledgements
+
+I'd like to thank:
+- Simon Tatham for his [wonderful guide to creating your own Custom Control Structure Macros](https://www.chiark.greenend.org.uk/%7Esgtatham/mp/)
+- tsoding/reximcut for the interesting approach to using lifetimes for resource management [youtube video](https://www.youtube.com/watch?v=ncRv9fCxt_w) and subsequent [reddit discussion](https://www.reddit.com/r/C_Programming/comments/8ytihi/how_i_manage_resources_in_pure_c_life_time/).
