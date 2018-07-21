@@ -1,6 +1,6 @@
 # **raii**
 
-A simple library to provide RAII in standard-compliant C99, using `raii_with(resource, initializer, destructor) { ... }`-syntax:
+A simple library to provide RAII (or something very much like it) in standard-compliant C99, using `raii_with(resource, initializer, destructor) { ... }`-syntax:
 
 ```C
 #include "raii/raii.h"
